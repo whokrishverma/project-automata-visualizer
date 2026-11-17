@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automata Visualizer — DFA & NFA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Automata Visualizer</h1>
+    <p>Define a DFA or NFA, process an input string, and inspect every state transition.</p>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>1. Define your automaton</h2>
+      <label for="kind">Automaton type</label>
+      <select id="kind"><option value="DFA">DFA</option><option value="NFA">NFA</option></select>
+
+      <div class="row">
+        <div>
+          <label for="states">States</label>
+          <input id="states" value="q0,q1,q2" />
+        </div>
+        <div>
+          <label for="alphabet">Alphabet</label>
+          <input id="alphabet" value="0,1" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="start">Start state</label>
+          <input id="start" value="q0" />
+        </div>
+        <div>
+          <label for="finals">Final states</label>
+          <input id="finals" value="q2" />
+        </div>
+      </div>
+
+      <label for="transitions">Transitions (one per line)</label>
+      <textarea id="transitions" spellcheck="false">q0,0,q1
+q0,1,q0
+q1,0,q1
+q1,1,q2
+q2,0,q1
+q2,1,q0</textarea>
+      <div class="hint">Format: <b>from,symbol,to</b>. Example: <code>q0,0,q1</code>. For an NFA, add multiple lines with the same from-state and symbol to represent multiple possible destinations. This version does not include ε-transitions.</div>
+
+      <label for="inputString">Input string</label>
+      <input id="inputString" value="101" placeholder="e.g. 101" />
+      <div class="hint">Use an empty input to test ε (the empty string). Do not type quotation marks.</div>
+
+      <div class="actions">
+        <button id="loadSample" class="secondary">Load sample</button>
+        <button id="validate">Validate &amp; draw</button>
+      </div>
+      <div class="actions">
+        <button id="step" class="secondary">Next step</button>
+        <button id="reset" class="secondary">Reset</button>
+      </div>
+      <div id="error" class="error"></div>
+    </section>
+
+    <section class="panel">
+      <div class="visual-top">
+        <h2 style="margin:0">2. Automaton visualization</h2>
+        <span class="pill" id="typeBadge">DFA</span>
+      </div>
+      <svg id="graph" viewBox="0 0 760 360" role="img" aria-label="Automaton state diagram"></svg>
+      <div class="legend">
+        <span><i class="dot" style="background:#94a3b8"></i>Inactive</span>
+        <span><i class="dot" style="background:#2563eb"></i>Active/current</span>
+        <span><i class="dot" style="background:#16a34a"></i>Accepting final state</span>
+      </div>
+
+      <div class="stepbox">
+        <div class="stephead">3. Step-by-step execution</div>
+        <div class="stepbody">
+          <div id="status">Load or validate an automaton, then press Run all or Next step.</div>
+          <div class="small" id="progress" style="margin-top:5px">No simulation started.</div>
+          <table class="trace">
+            <thead><tr><th>Step</th><th>Symbol read</th><th>Active state(s)</th><th>Transition</th></tr></thead>
+            <tbody id="traceBody"><tr><td colspan="4" class="small">Execution trace will appear here.</td></tr></tbody>
+          </table>
+          <div id="result" class="result"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
